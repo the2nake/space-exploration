@@ -165,6 +165,7 @@ class Player extends Ship {
         this.agility = 0.3;
         this.speed = 5;
         this.health = 100;
+        this.level = 1;
     }
     update() {
         super.update();
@@ -385,11 +386,11 @@ class Bullet {
                 if (Math.sqrt((COVID19.x - this.x) ** 2 + (COVID19.y - this.y) ** 2) < COVID19.boxradius) { // broad sweeps
                     delete bullets[this.mykey];
                     delete enemies[COVID19.mykey];
-                        killsound = document.createElement("audio");
-                        killsound.src = "./audio/sfx_twoTone.ogg";
-                        killsound.volume = 0.5;
-                        killsound.play();
-                    
+                    killsound = document.createElement("audio");
+                    killsound.src = "./audio/sfx_twoTone.ogg";
+                    killsound.volume = 0.5;
+                    killsound.play();
+
                     this.player.score += 100;
                 }
             }
@@ -405,17 +406,22 @@ class Bullet {
     }
 }
 
-var lasersound = document.createElement("audio");
-lasersound.src = "./audio/sfx_laser" + 2 + ".ogg";
-lasersound.volume = 0.25;
+var killsound, lasersound, losesound;
 
-var killsound = document.createElement("audio");
-killsound.src = "./audio/sfx_twoTone.ogg";
-killsound.volume = 0.5;
+function createSounds() {
+    lasersound = document.createElement("audio");
+    lasersound.src = "./audio/sfx_laser" + 2 + ".ogg";
+    lasersound.volume = 0.25;
 
-var losesound = document.createElement("audio");
-losesound.src = "./audio/sfx_lose.ogg";
+    killsound = document.createElement("audio");
+    killsound.src = "./audio/sfx_twoTone.ogg";
+    killsound.volume = 0.5;
 
+    losesound = document.createElement("audio");
+    losesound.src = "./audio/sfx_lose.ogg";
+}
+
+createSounds();
 
 class UI {
 
@@ -430,17 +436,31 @@ class HUD {
             thing.src = "./images/UI/numeral" + i + ".png";
             this.numImgList.push(thing);
         }
-        console.log(thing);
+        this.mode = "";
+        this.levelArr = [];
+        this.scoreArr = [];
     }
     display() {
         this.displayScore(player.score);
         this.displayHealth(player.health);
         this.displayMuteButton();
+        if (this.mode) {
+            // campaign
+            this.displayLevel(player.level)
+        }
     }
     displayScore(score) {
-        var scoreArr = (score + "").split("");
-        for (let i = 0; i < scoreArr.length; i++) {
-            this.c.drawImage(this.numImgList[scoreArr[i]], canvas.width - 19 * (scoreArr.length - i) - 10, 10);
+        this.scoreArr = (score + "").split("");
+        for (let i = 0; i < this.scoreArr.length; i++) {
+            this.c.drawImage(this.numImgList[this.scoreArr[i]], canvas.width - 19 * (this.scoreArr.length - i) - 10, 10);
+        }
+        this.c.strokeStyle = "white";
+        this.c.lineWidth = 1;
+        this.c.font = "24px Ken Vector Future";
+        if (this.levelArr.length >= this.scoreArr.length) {
+            this.c.strokeText("Score: ", canvas.width - 19 * this.levelArr.length - 130, 27);
+        } else {
+            this.c.strokeText("Score: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
         }
     }
     displayHealth(health) {
@@ -453,5 +473,19 @@ class HUD {
     }
     displayMuteButton() {
 
+    }
+    displayLevel(level) {
+        this.levelArr = (level + "").split("");
+        for (let i = 0; i < this.levelArr.length; i++) {
+            this.c.drawImage(this.numImgList[this.levelArr[i]], canvas.width - 19 * (this.levelArr.length - i) - 10, 36);
+        }
+        this.c.strokeStyle = "white";
+        this.c.lineWidth = 1;
+        this.c.font = "24px Ken Vector Future";
+        if (this.levelArr.length >= this.scoreArr.length) {
+            this.c.strokeText("Level: ", canvas.width - 19 * this.levelArr.length - 130, 54);
+        } else {
+            this.c.strokeText("Level: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
+        }
     }
 }
