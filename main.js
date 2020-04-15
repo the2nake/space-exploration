@@ -5,6 +5,8 @@ var coordwidth = 1000;
 var coordheight = 562.5; // dynamic canvas scaling.
 musicEl = document.getElementById("music");
 
+
+
 document.getElementById("canvasBackDiv").appendChild(canvas);
 if (canvas.getContext) {
     /** @type {CanvasRenderingContext2D} */
