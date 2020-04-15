@@ -444,7 +444,7 @@ class HUD {
             thing.src = "./images/UI/numeral" + i + ".png";
             this.numImgList.push(thing);
         }
-        this.mode = "";
+        this.mode = undefined;
         this.levelArr = [];
         this.scoreArr = [];
     }

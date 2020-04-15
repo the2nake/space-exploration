@@ -15,16 +15,7 @@ var bullets = {};
 var player, mainhdl;
 var HUDobj = new HUD(c);
 var mute = true;
-
-// draw the background
-
 var endless = function () {
-    HUDobj.mode = false; // endless mode
-    endlessb.style.display = "none";
-    campaignb.style.display = "none";
-    // resize canvas accordingly
-    canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
-    canvas.height = 9 * canvas.width / 16;
     // draw background
     c.clearRect(0, 0, canvas.width, canvas.height);
     var img = document.createElement("img");
@@ -74,12 +65,6 @@ var endless = function () {
 };
 
 var campaign = function () {
-    HUDobj.mode = true; // campaign
-    endlessb.style.display = "none";
-    campaignb.style.display = "none";
-    // resize canvas accordingly
-    canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
-    canvas.height = 9 * canvas.width / 16;
     // draw background
     c.clearRect(0, 0, canvas.width, canvas.height);
     var img = document.createElement("img");
@@ -155,13 +140,18 @@ muteb.style.top = ((canvas.getBoundingClientRect().top + 999*canvas.height / 100
 muteb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
 document.body.appendChild(muteb);
 
+musicEl.volume = 0.25;
+
 endlessb.addEventListener("click", function () {
     musicEl.src = "./audio/endless.wav";
+    musicEl.volume = 0.5;
+    HUDobj.mode = false; // endless mode
     player = new Player(coordwidth / 2, coordheight / 2, canvas, bullets, enemies);
     window.cancelAnimationFrame(intialhdl);
     endless();
 });
 campaignb.addEventListener("click", function () {
+    HUDobj.mode = true; // campaign mode
     player = new Player(coordwidth / 2, coordheight / 2, canvas, bullets, enemies);
     window.cancelAnimationFrame(intialhdl);
     campaign();
@@ -171,11 +161,9 @@ muteb.addEventListener("click", function () {
     if (mute) {
         muteb.src = "./images/UI/unmuted.png";
         mute = false;
-        musicEl.play();
     } else {
         muteb.src = "./images/UI/muted.png";
         mute = true;
-        musicEl.pause();
     }
 });
 
@@ -191,3 +179,29 @@ var intialhdl = requestAnimationFrame(function intialscreen() {
     c.drawImage(img, 0, 0, canvas.width, canvas.height);
     requestAnimationFrame(intialscreen);
 });
+
+window.setInterval(function UIresize() {
+    muteb.style.width = 24 * canvas.width / 550 + "px";
+    muteb.style.height = 24 * canvas.width / 550 + "px";
+    muteb.style.top = ((canvas.getBoundingClientRect().top + 999*canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
+    muteb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
+    
+    if (HUDobj.mode != undefined) {
+        endlessb.style.display = "none";
+        campaignb.style.display = "none";
+    } else {
+        campaignb.style.width = 222 * canvas.width / 550 + "px";
+        campaignb.style.height = 39 * canvas.width / 550 + "px";
+        campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 + 50) * canvas.width / 1100) + "px";
+        campaignb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+        
+        endlessb.style.width = 222 * canvas.width / 550 + "px";
+        endlessb.style.height = 39 * canvas.width / 550 + "px";
+        endlessb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 - 50) * canvas.width / 1100) + "px";
+        endlessb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+    }
+    // resize canvas accordingly
+    canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
+    canvas.height = 9 * canvas.width / 16;
+    musicEl.play();
+}, 100);
