@@ -1,5 +1,5 @@
 function handleCircleCollision(key1, obj1, key2, obj2) {
-    // comparision is ALWWAYS bullet is 1, enemy/player is 2
+    // comparision is ALWWAYS bullet is 1, player is 2
     var x1, x2, y1, y2, r1, r2;
     x1 = (obj1[key1].x + 14 * Math.cos(obj1[key1].rad)) * obj2[key2].scale;
     y1 = (obj1[key1].y + 14 * Math.sin(obj1[key1].rad)) * obj2[key2].scale;
@@ -9,6 +9,7 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
     r2 = obj2[key2].boxradius * obj2[key2].scale ** 2;
     if (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) <= r1 + r2) {
         // return true;
+        player.health -= 5;
         // confirmed collision
         if (player.health <= 0) {
             losesound.play();
@@ -37,11 +38,14 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
             };
             s();
         } else {
-            player.health -= 5;
+            var img = document.createElement("img");
+            img.src = "images/Lasers/laserRed08.png";
+            obj2[key2].ctx.drawImage(img, canvas.width * obj1[key1].x / 1000 - 24 * obj2[key2].scale, canvas.height * obj1[key1].y / 562.5 - 24 * obj2[key2].scale, 48 * obj2[key2].scale, 48 * obj2[key2].scale);
             delete obj1[key1];
         }
     }
 }
+
 
 class Ship {
     /**
@@ -114,7 +118,7 @@ class Ship {
     shoot(bullets, enemies, player, color) {
         let x = Math.random(); // any key is fine, but the keys must stay constant, so use object with random keys. 
         // You need 5 * 10 ^ 15 entities for that to overlap
-        if (color == "Red") {
+        if (color === "Red") {
             bullets[x] = new Bullet(color, this.x, this.y, (this.deg + 180) % 360, this.canvas, bullets, enemies, player, x);
         } else {
             bullets[x] = new Bullet(color, this.x, this.y, this.deg, this.canvas, bullets, enemies, player, x);
@@ -185,7 +189,7 @@ class Player extends Ship {
         if (map.w || map.W || map.ArrowUp) {
             this.accelerate();
         }
-        if (map[" "] && this.reload == true) {
+        if (map[" "] && this.reload === true) {
             this.reload = false;
             this.shoot(this.bullets, this.enemies, this, "Blue");
             var me = this;
@@ -303,7 +307,7 @@ class Enemy extends Ship {
             this.circling = false;
         }
         var me;
-        if (this.reload == true) {
+        if (this.reload === true) {
             this.reload = false;
             this.shoot(this.bullets, this.enemies, this.player, "Red");
             me = this;
@@ -341,7 +345,7 @@ class Bullet {
         this.enemies = enemies;
         this.scale = canvas.width / (400 * this.width);
 
-        if (this.color == "Blue" || this.color == "Green") {
+        if (this.color === "Blue" || this.color === "Green") {
             lasersound = document.createElement("audio");
             lasersound.src = "./audio/sfx_laser" + 2 + ".ogg";
             lasersound.volume = 0.25;
@@ -378,14 +382,17 @@ class Bullet {
                 this.y = 562.5;
             }
         }
-        if (this.color == "Green" || this.color == "Blue") {
-            for (let _ in Object.keys(this.enemies)) { // broad sweeps
-            }
+        if (this.color === "Green" || this.color === "Blue") {
             for (let i = 0; i < Object.keys(this.enemies).length; i++) {
                 let COVID19 = this.enemies[Object.keys(this.enemies)[i]];
-                if (Math.sqrt((COVID19.x - this.x) ** 2 + (COVID19.y - this.y) ** 2) < COVID19.boxradius) { // broad sweeps
-                    delete bullets[this.mykey];
-                    delete enemies[COVID19.mykey];
+                if (Math.sqrt((COVID19.x - this.x) ** 2 + (COVID19.y - this.y) ** 2) < COVID19.boxradius) {
+
+                    var img = document.createElement("img");
+                    img.src = "images/Lasers/laser" + this.color + "08.png";
+                    this.ctx.drawImage(img, canvas.width * this.x / 1000 - 24 * this.enemies[COVID19.mykey].scale, canvas.height * this.enemies[COVID19.mykey].y / 562.5 - 24 * this.enemies[COVID19.mykey].scale, 48 * this.enemies[COVID19.mykey].scale, 48 * this.enemies[COVID19.mykey].scale);
+
+                    delete this.bullets[this.mykey];
+                    delete this.enemies[COVID19.mykey];
                     killsound = document.createElement("audio");
                     killsound.src = "./audio/sfx_twoTone.ogg";
                     killsound.volume = 0.5;
@@ -429,6 +436,7 @@ class UI {
 
 class HUD {
     constructor(context) {
+        /** @type {CanvasRenderingContext2D} */
         this.c = context;
         this.numImgList = [];
         for (let i = 0; i < 10; i++) {
@@ -454,13 +462,16 @@ class HUD {
         for (let i = 0; i < this.scoreArr.length; i++) {
             this.c.drawImage(this.numImgList[this.scoreArr[i]], canvas.width - 19 * (this.scoreArr.length - i) - 10, 10);
         }
-        this.c.strokeStyle = "white";
-        this.c.lineWidth = 1;
+        this.c.strokeStyle = "grey";
+        this.c.fillStyle = "white";
+        this.c.lineWidth = 4;
         this.c.font = "24px Ken Vector Future";
         if (this.levelArr.length >= this.scoreArr.length) {
             this.c.strokeText("Score: ", canvas.width - 19 * this.levelArr.length - 130, 27);
+            this.c.fillText("Score: ", canvas.width - 19 * this.levelArr.length - 130, 27);
         } else {
             this.c.strokeText("Score: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
+            this.c.fillText("Score: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
         }
     }
     displayHealth(health) {
@@ -479,13 +490,16 @@ class HUD {
         for (let i = 0; i < this.levelArr.length; i++) {
             this.c.drawImage(this.numImgList[this.levelArr[i]], canvas.width - 19 * (this.levelArr.length - i) - 10, 36);
         }
-        this.c.strokeStyle = "white";
-        this.c.lineWidth = 1;
+        this.c.strokeStyle = "grey";
+        this.c.fillStyle = "white";
+        this.c.lineWidth = 4;
         this.c.font = "24px Ken Vector Future";
         if (this.levelArr.length >= this.scoreArr.length) {
             this.c.strokeText("Level: ", canvas.width - 19 * this.levelArr.length - 130, 54);
+            this.c.fillText("Level: ", canvas.width - 19 * this.levelArr.length - 130, 54);
         } else {
             this.c.strokeText("Level: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
+            this.c.fillText("Level: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
         }
     }
 }

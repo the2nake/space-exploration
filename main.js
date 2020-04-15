@@ -3,21 +3,20 @@ canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
 canvas.height = 9 * canvas.width / 16;
 var coordwidth = 1000;
 var coordheight = 562.5; // dynamic canvas scaling.
+musicEl = document.getElementById("music");
 
 document.getElementById("canvasBackDiv").appendChild(canvas);
 if (canvas.getContext) {
     /** @type {CanvasRenderingContext2D} */
     var c = canvas.getContext('2d');
 }
-var enemies = {}; var bullets = {}; var player, mainhdl;
+var enemies = {};
+var bullets = {};
+var player, mainhdl;
 var HUDobj = new HUD(c);
-var mute = false;
+var mute = true;
 
 // draw the background
-c.clearRect(0, 0, canvas.width, canvas.height);
-var img = document.createElement("img");
-img.src = "images/background.jpg";
-c.drawImage(img, 0, 0, canvas.width, canvas.height);
 
 var endless = function () {
     HUDobj.mode = false; // endless mode
@@ -147,5 +146,48 @@ campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) 
 campaignb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
 document.body.appendChild(campaignb);
 
-endlessb.addEventListener("click", function() {player = new Player(coordwidth/2, coordheight/2, canvas, bullets, enemies); endless();});
-campaignb.addEventListener("click", function() {player = new Player(coordwidth/2, coordheight/2, canvas, bullets, enemies); campaign();});
+var muteb = document.createElement("img")
+muteb.src = "./images/UI/muted.png";
+muteb.style.position = "absolute";
+muteb.style.width = 24 * canvas.width / 550 + "px";
+muteb.style.height = 24 * canvas.width / 550 + "px";
+muteb.style.top = ((canvas.getBoundingClientRect().top + 999*canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
+muteb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
+document.body.appendChild(muteb);
+
+endlessb.addEventListener("click", function () {
+    musicEl.src = "./audio/endless.wav";
+    player = new Player(coordwidth / 2, coordheight / 2, canvas, bullets, enemies);
+    window.cancelAnimationFrame(intialhdl);
+    endless();
+});
+campaignb.addEventListener("click", function () {
+    player = new Player(coordwidth / 2, coordheight / 2, canvas, bullets, enemies);
+    window.cancelAnimationFrame(intialhdl);
+    campaign();
+});
+
+muteb.addEventListener("click", function () {
+    if (mute) {
+        muteb.src = "./images/UI/unmuted.png";
+        mute = false;
+        musicEl.play();
+    } else {
+        muteb.src = "./images/UI/muted.png";
+        mute = true;
+        musicEl.pause();
+    }
+});
+
+c.clearRect(0, 0, canvas.width, canvas.height);
+var img = document.createElement("img");
+img.src = "images/background.jpg";
+c.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+var intialhdl = requestAnimationFrame(function intialscreen() {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    var img = document.createElement("img");
+    img.src = "images/background.jpg";
+    c.drawImage(img, 0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(intialscreen);
+});
