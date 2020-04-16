@@ -347,7 +347,7 @@ class Bullet {
 
         if (this.color === "Blue" || this.color === "Green") {
             lasersound = document.createElement("audio");
-            lasersound.src = "./audio/sfx_laser" + 2 + ".ogg";
+            lasersound.src = "audio/sfx_laser2.ogg";
             lasersound.volume = 0.25;
             lasersound.play();
         }
@@ -394,7 +394,7 @@ class Bullet {
                     delete this.bullets[this.mykey];
                     delete this.enemies[COVID19.mykey];
                     killsound = document.createElement("audio");
-                    killsound.src = "./audio/sfx_twoTone.ogg";
+                    killsound.src = "audio/sfx_twoTone.ogg";
                     killsound.volume = 0.5;
                     killsound.play();
 
@@ -417,15 +417,15 @@ var killsound, lasersound, losesound;
 
 function createSounds() {
     lasersound = document.createElement("audio");
-    lasersound.src = "./audio/sfx_laser" + 2 + ".ogg";
+    lasersound.src = "audio/sfx_laser2.ogg";
     lasersound.volume = 0.25;
 
     killsound = document.createElement("audio");
-    killsound.src = "./audio/sfx_twoTone.ogg";
+    killsound.src = "audio/sfx_twoTone.ogg";
     killsound.volume = 0.5;
 
     losesound = document.createElement("audio");
-    losesound.src = "./audio/sfx_lose.ogg";
+    losesound.src = "audio/sfx_lose.ogg";
 }
 
 createSounds();
@@ -441,7 +441,7 @@ class HUD {
         this.numImgList = [];
         for (let i = 0; i < 10; i++) {
             var thing = document.createElement("img");
-            thing.src = "./images/UI/numeral" + i + ".png";
+            thing.src = "images/UI/numeral" + i + ".png";
             this.numImgList.push(thing);
         }
         this.mode = undefined;

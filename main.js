@@ -20,16 +20,6 @@ var endless = function () {
     var img = document.createElement("img");
     img.src = "images/background.jpg";
     c.drawImage(img, 0, 0, canvas.width, canvas.height);
-    // mute audio
-    if (mute) {
-        lasersound.volume = 0;
-        killsound.volume = 0;
-        losesound.volume = 0;
-    } else {
-        lasersound.volume = 0.25;
-        killsound.volume = 0.5;
-        losesound.volume = 1;
-    }
     try {
         /*for (let _ in Object.keys(bullets)) {
             bullets[Object.keys(bullets)[_]].update();
@@ -65,16 +55,6 @@ var campaign = function () {
     var img = document.createElement("img");
     img.src = "images/background.jpg";
     c.drawImage(img, 0, 0, canvas.width, canvas.height);
-    // mute audio
-    if (mute) {
-        lasersound.volume = 0;
-        killsound.volume = 0;
-        losesound.volume = 0;
-    } else {
-        lasersound.volume = 0.25;
-        killsound.volume = 0.5;
-        losesound.volume = 1;
-    }
     try {
         /*for (let _ in Object.keys(bullets)) {
             bullets[Object.keys(bullets)[_]].update();
@@ -105,7 +85,7 @@ var campaign = function () {
     mainhdl = requestAnimationFrame(campaign);
 };
 var endlessb = document.createElement("img");
-endlessb.src = "./images/UI/endless.png";
+endlessb.src = "images/UI/endless.png";
 endlessb.style.position = "absolute";
 endlessb.style.width = 222 * canvas.width / 550 + "px";
 endlessb.style.height = 39 * canvas.width / 550 + "px";
@@ -113,7 +93,7 @@ endlessb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) -
 endlessb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
 document.body.appendChild(endlessb);
 var campaignb = document.createElement("img");
-campaignb.src = "./images/UI/campaign.png";
+campaignb.src = "images/UI/campaign.png";
 campaignb.style.position = "absolute";
 campaignb.style.width = 222 * canvas.width / 550 + "px";
 campaignb.style.height = 39 * canvas.width / 550 + "px";
@@ -121,7 +101,7 @@ campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) 
 campaignb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
 document.body.appendChild(campaignb);
 var muteb = document.createElement("img")
-muteb.src = "./images/UI/muted.png";
+muteb.src = "images/UI/muted.png";
 muteb.style.position = "absolute";
 muteb.style.width = 24 * canvas.width / 550 + "px";
 muteb.style.height = 24 * canvas.width / 550 + "px";
@@ -132,7 +112,7 @@ musicEl.volume = 0.25;
 endlessb.addEventListener("click", function () {
     endlessb.style.display = "none";
     campaignb.style.display = "none";
-    musicEl.src = "./audio/endless.wav";
+    musicEl.src = "audio/endless.wav";
     musicEl.volume = 0.5;
     HUDobj.mode = false; // endless mode
     player = new Player(coordwidth / 2, coordheight / 2, canvas, bullets, enemies);
@@ -149,10 +129,10 @@ campaignb.addEventListener("click", function () {
 });
 muteb.addEventListener("click", function () {
     if (mute) {
-        muteb.src = "./images/UI/unmuted.png";
+        muteb.src = "images/UI/unmuted.png";
         mute = false;
     } else {
-        muteb.src = "./images/UI/muted.png";
+        muteb.src = "images/UI/muted.png";
         mute = true;
     }
 });
@@ -185,8 +165,24 @@ window.setInterval(function UIresize() {
         endlessb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 - 50) * canvas.width / 1100) + "px";
         endlessb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
     }
+    // mute audio
+    if (mute) {
+        lasersound.volume = 0;
+        killsound.volume = 0;
+        losesound.volume = 0;
+        musicEl.volume = 0;
+    } else {
+        musicEl.play();
+        lasersound.volume = 0.25;
+        killsound.volume = 0.5;
+        losesound.volume = 1;
+        if (musicEl.src == "audio/endless.wav") {
+            musicEl.volume = 0.5;
+        } else {
+            musicEl.volume = .25;
+        }
+    }
     // resize canvas accordingly
     canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
     canvas.height = 9 * canvas.width / 16;
-    musicEl.play();
 }, 100);
