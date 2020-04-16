@@ -72,21 +72,13 @@ function main() {
             // draw background
             c.clearRect(0, 0, canvas.width, canvas.height);
             c.drawImage(resources["images/background.jpg"], 0, 0, canvas.width, canvas.height);
-            try {
-                /*for (let _ in Object.keys(bullets)) {
-                    bullets[Object.keys(bullets)[_]].update();
-                    if (bullets[Object.keys(bullets)[_]].color == "Red") {
-                        alert("It has been found.");
-                    }
-                }*/
-                for (let i = 0; i < Object.keys(bullets).length; i++) {
-                    bullets[Object.keys(bullets)[i]].update();
-                }
-                for (let i = 0; i < Object.keys(enemies).length; i++) {
-                    enemies[Object.keys(enemies)[i]].update();
-                }
-                player.update();
-            } catch (TypeError) {}
+            for (let i = 0; i < Object.keys(bullets).length; i++) {
+                bullets[Object.keys(bullets)[i]].update();
+            }
+            for (let i = 0; i < Object.keys(enemies).length; i++) {
+                enemies[Object.keys(enemies)[i]].update();
+            }
+            player.update();
             if (Math.floor(Math.random() * 100) == 1) {
                 var x = Math.random();
                 enemies[x] = (new Enemy(Math.random() * coordwidth, Math.random() * coordheight, canvas, bullets, enemies, player, x));
