@@ -1,3 +1,6 @@
+// Credit not needed but is appreciated.
+// classes.js by    Thuong
+
 function handleCircleCollision(key1, obj1, key2, obj2) {
     // comparision is ALWWAYS bullet is 1, player is 2
     var x1, x2, y1, y2, r1, r2;
@@ -38,8 +41,7 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
             };
             s();
         } else {
-            var img = document.createElement("img");
-            img.src = "images/Lasers/laserRed08.png";
+            var img = resources["images/Lasers/laserRed08.png"];
             obj2[key2].ctx.drawImage(img, canvas.width * obj1[key1].x / 1000 - 24 * obj2[key2].scale, canvas.height * obj1[key1].y / 562.5 - 24 * obj2[key2].scale, 48 * obj2[key2].scale, 48 * obj2[key2].scale);
             delete obj1[key1];
         }
@@ -65,7 +67,6 @@ class Ship {
         this.x = sx;
         this.y = sy;
         this.deg = 0; // 0 is up, 90 is right, 180 is bottom, 270 is left
-        this.image = document.createElement("img");
         this.dx = 0;
         this.dy = 0;
         this.agility = 0.1;
@@ -159,7 +160,7 @@ class Player extends Ship {
      */
     constructor(sx, sy, canvas, bullets, enemies) {
         super(sx, sy, canvas);
-        this.image.src = "images/playerShip2_blue.png";
+        this.image = resources["images/playerShip2_blue.png"];
         this.width = 112;
         this.height = 75;
         this.bullets = bullets;
@@ -211,27 +212,27 @@ class Enemy extends Ship {
         super(sx, sy, canvas);
         switch (Math.floor(Math.random() * 5) + 1) {
             case 1:
-                this.image.src = "images/Enemies/enemyBlack1.png";
+                this.image = resources["images/Enemies/enemyBlack1.png"];
                 this.width = 93;
                 this.speed = 4;
                 break;
             case 2:
-                this.image.src = "images/Enemies/enemyBlack2.png";
+                this.image = resources["images/Enemies/enemyBlack2.png"];
                 this.width = 104;
                 this.speed = 3;
                 break;
             case 3:
-                this.image.src = "images/Enemies/enemyBlack3.png";
+                this.image = resources["images/Enemies/enemyBlack3.png"];
                 this.width = 103;
                 this.speed = 3;
                 break;
             case 4:
-                this.image.src = "images/Enemies/enemyBlack4.png";
+                this.image = resources["images/Enemies/enemyBlack4.png"];
                 this.width = 82;
                 this.speed = 1;
                 break;
             case 5:
-                this.image.src = "images/Enemies/enemyBlack5.png";
+                this.image = resources["images/Enemies/enemyBlack5.png"];
                 this.width = 97;
                 this.speed = 2;
                 break;
@@ -328,9 +329,8 @@ class Bullet {
         this.rad = Math.PI * (this.deg - 90) / 180;
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
-        this.image = document.createElement("img");
         this.color = color;
-        this.image.src = "images/Lasers/laser" + color + "07.png";
+        this.image = resources["images/Lasers/laser" + color + "07.png"];
         this.width = 9;
         this.height = 37;
         this.boxradius = 5; // will be shifted to top
@@ -346,8 +346,7 @@ class Bullet {
         this.scale = canvas.width / (400 * this.width);
 
         if (this.color === "Blue" || this.color === "Green") {
-            lasersound = document.createElement("audio");
-            lasersound.src = "audio/sfx_laser2.ogg";
+            lasersound = resources["audio/sfx_laser2.ogg"];
             lasersound.volume = 0.25;
             lasersound.play();
         }
@@ -393,8 +392,7 @@ class Bullet {
 
                     delete this.bullets[this.mykey];
                     delete this.enemies[COVID19.mykey];
-                    killsound = document.createElement("audio");
-                    killsound.src = "audio/sfx_twoTone.ogg";
+                    killsound = resources["audio/sfx_twoTone.ogg"];
                     killsound.volume = 0.5;
                     killsound.play();
 
@@ -416,19 +414,12 @@ class Bullet {
 var killsound, lasersound, losesound;
 
 function createSounds() {
-    lasersound = document.createElement("audio");
-    lasersound.src = "audio/sfx_laser2.ogg";
-    lasersound.volume = 0.25;
+    lasersound = resources["audio/sfx_laser2.ogg"];
 
-    killsound = document.createElement("audio");
-    killsound.src = "audio/sfx_twoTone.ogg";
-    killsound.volume = 0.5;
+    killsound = resources["audio/sfx_twoTone.ogg"];
 
-    losesound = document.createElement("audio");
-    losesound.src = "audio/sfx_lose.ogg";
+    losesound = resources["audio/sfx_lose.ogg"];
 }
-
-createSounds();
 
 class UI {
 
@@ -441,7 +432,7 @@ class HUD {
         this.numImgList = [];
         for (let i = 0; i < 10; i++) {
             var thing = document.createElement("img");
-            thing.src = "images/UI/numeral" + i + ".png";
+            thing.src = resources["images/UI/numeral" + i + ".png"];
             this.numImgList.push(thing);
         }
         this.mode = undefined;
@@ -454,7 +445,7 @@ class HUD {
         this.displayMuteButton();
         if (this.mode) {
             // campaign
-            this.displayLevel(player.level)
+            this.displayLevel(player.level);
         }
     }
     displayScore(score) {
