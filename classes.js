@@ -432,9 +432,7 @@ class HUD {
         this.c = context;
         this.numImgList = [];
         for (let i = 0; i < 10; i++) {
-            var thing = document.createElement("img");
-            thing.src = resources["images/UI/numeral" + i + ".png"];
-            this.numImgList.push(thing);
+            this.numImgList.push(resources["images/UI/numeral" + i + ".png"]);
         }
         this.mode = undefined;
         this.levelArr = [];
