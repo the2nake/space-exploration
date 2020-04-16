@@ -318,6 +318,7 @@ class Enemy extends Ship {
         }
     }
 }
+
 class Bullet {
     constructor(color, x, y, deg, canvas, bullets, enemies, player, mykey) {
         this.color = color;
