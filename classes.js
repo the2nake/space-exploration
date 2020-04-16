@@ -16,6 +16,7 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
         // confirmed collision
         if (player.health <= 0) {
             losesound.play();
+            musicEl.src = "audio/defeat.ogg";
             console.log("We have a loser!");
             var temp = obj2[key2];
             var finalscore = obj2[key2].score;
@@ -72,14 +73,14 @@ class Ship {
         this.agility = 0.1;
         this.speed = 3;
         this.turningRadius = 12 / this.speed;
-        this.scale = canvas.width / (40 * this.width);
+        this.scale = canvas.width / (33 * this.width);
         this.reload = true;
     }
     /**
      * Updates the object
      */
     update() {
-        this.scale = canvas.width / (40 * this.width);
+        this.scale = canvas.width / (33 * this.width);
         this.deg = this.deg % 360;
         this.rad = Math.PI * (this.deg - 90) / 180;
         if (this.image.complete) {
@@ -196,7 +197,7 @@ class Player extends Ship {
             var me = this;
             window.setTimeout(function () {
                 me.reload = true;
-            }, 750);
+            }, 250);
         }
     }
 }
@@ -212,27 +213,27 @@ class Enemy extends Ship {
         super(sx, sy, canvas);
         switch (Math.floor(Math.random() * 5) + 1) {
             case 1:
-                this.image = resources["images/Enemies/enemyBlack1.png"];
+                this.image = resources["images/Enemies/enemyRed1.png"];
                 this.width = 93;
                 this.speed = 4;
                 break;
             case 2:
-                this.image = resources["images/Enemies/enemyBlack2.png"];
+                this.image = resources["images/Enemies/enemyRed2.png"];
                 this.width = 104;
                 this.speed = 3;
                 break;
             case 3:
-                this.image = resources["images/Enemies/enemyBlack3.png"];
+                this.image = resources["images/Enemies/enemyRed3.png"];
                 this.width = 103;
                 this.speed = 3;
                 break;
             case 4:
-                this.image = resources["images/Enemies/enemyBlack4.png"];
+                this.image = resources["images/Enemies/enemyRed4.png"];
                 this.width = 82;
                 this.speed = 1;
                 break;
             case 5:
-                this.image = resources["images/Enemies/enemyBlack5.png"];
+                this.image = resources["images/Enemies/enemyRed5.png"];
                 this.width = 97;
                 this.speed = 2;
                 break;
@@ -284,6 +285,20 @@ class Enemy extends Ship {
             this.y -= Math.sign(this.dy);
             this.diffx = this.x - player.x;
             this.diffy = this.y - player.y;
+
+            // wrapping screen
+            if (this.x >= 1000) {
+                this.x = 0;
+            }
+            if (this.x < 0) {
+                this.x = 1000;
+            }
+            if (this.y >= 562.5) {
+                this.y = 0;
+            }
+            if (this.y < 0) {
+                this.y = 562.5;
+            }
             i++; // safety of CPU protection :)
         }
 
@@ -293,7 +308,7 @@ class Enemy extends Ship {
                     this.dx += -0.05 * Math.cos(this.rad);
                 }
                 if (!isNaN(0.05 * Math.sin(this.rad))) {
-                    this.dy += -0.105 * Math.sin(this.rad);
+                    this.dy += -0.05 * Math.sin(this.rad);
                 }
             }
         }
@@ -344,7 +359,7 @@ class Bullet {
         this.ticks = 0;
         this.bullets = bullets;
         this.enemies = enemies;
-        this.scale = canvas.width / (400 * this.width);
+        this.scale = player.scale;
 
         if (this.color === "Blue" || this.color === "Green") {
             lasersound = resources["audio/sfx_laser2.ogg"];
@@ -355,7 +370,7 @@ class Bullet {
     update() {
         if (this.image.complete) {
             this.ticks += 1;
-            this.scale = canvas.width / (400 * this.width);
+            this.scale = player.scale;
             this.dx = 7 * Math.cos(this.rad);
             this.dy = 7 * Math.sin(this.rad);
 

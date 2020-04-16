@@ -22,7 +22,7 @@ function main() {
 
 
         canvas = /** @type {HTMLCanvasElement} */ document.createElement("canvas");
-        canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
+        canvas.width = document.body.clientWidth * 0.65;
         canvas.height = 9 * canvas.width / 16;
         coordwidth = 1000;
         coordheight = 562.5; // dynamic canvas scaling      
@@ -183,13 +183,13 @@ function main() {
                 killsound.volume = 0.5;
                 losesound.volume = 1;
                 if (musicEl.src == "audio/endless.wav") {
-                    musicEl.volume = 0.5;
-                } else {
                     musicEl.volume = 0.25;
+                } else {
+                    musicEl.volume = 0.125;
                 }
             }
             // resize canvas accordingly
-            canvas.width = document.getElementsByTagName("body")[0].clientWidth * 0.6;
+            canvas.width = document.body.clientWidth * 0.65;
             canvas.height = 9 * canvas.width / 16;
         }, 100);
     } else {
