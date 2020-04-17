@@ -1,13 +1,13 @@
 // Credit not needed but is appreciated.
 // main.js by Thuong
 
-var canvas, coordheight, coordwidth, enemies, bullets, player, mainhdl, HUDobj, mute, endlessb, campaignb, muteb, img, initialhdl, campaign, endless, c, musicEl, ticks;
+var canvas, coordheight, coordwidth, enemies, bullets, player, mainhdl, HUDobj, mute, endlessb, campaignb, muteb, img, initialhdl, campaign, endless, c, musicEl, ticks, UIhdl;
 ticks = 0;
 
 function main() {
     resources_loaded = Object.keys(resources).length;
     total_resources_needed = resource_name_list.length;
-    document.getElementById("loadbar-progress").firstChild.innerHTML = "Loading... " + resources_loaded + "/" + total_resources_needed;
+    document.getElementById("loadbar-progress").innerHTML = "<p>Loading... " + resources_loaded + "/" + total_resources_needed + "</p>";
     document.getElementById("loadbar-progress").style.width = "calc(" + resources_loaded + "*(100% - 6px)/" + total_resources_needed + ")";
     if (resources_loaded == total_resources_needed && ticks < 100) {
         ticks++;
@@ -22,7 +22,7 @@ function main() {
 
 
         canvas = /** @type {HTMLCanvasElement} */ document.createElement("canvas");
-        canvas.width = document.body.clientWidth * 0.65;
+        canvas.width = window.innerHeight * 16 / 9 - 32;
         canvas.height = 9 * canvas.width / 16;
         coordwidth = 1000;
         coordheight = 562.5; // dynamic canvas scaling      
@@ -54,7 +54,7 @@ function main() {
             }
             player.update();
 
-            if (Math.floor(Math.random() * 100) == 1) {
+            if (Math.floor(Math.random() * 300) == 1) {
                 var x = Math.random();
                 enemies[x] = (new Enemy(Math.random() * coordwidth, Math.random() * coordheight, canvas, bullets, enemies, player, x));
             }
@@ -79,7 +79,7 @@ function main() {
                 enemies[Object.keys(enemies)[i]].update();
             }
             player.update();
-            if (Math.floor(Math.random() * 100) == 1) {
+            if (Math.floor(Math.random() * 300) == 1) {
                 var x = Math.random();
                 enemies[x] = (new Enemy(Math.random() * coordwidth, Math.random() * coordheight, canvas, bullets, enemies, player, x));
             }
@@ -153,7 +153,8 @@ function main() {
             c.drawImage(img, 0, 0, canvas.width, canvas.height);
             requestAnimationFrame(intialscreen);
         });
-        window.setInterval(function UIresize() {
+        UIhdl = window.setInterval(function UIresize() {
+
             muteb.style.width = 24 * canvas.width / 550 + "px";
             muteb.style.height = 24 * canvas.width / 550 + "px";
             muteb.style.top = ((canvas.getBoundingClientRect().top + 999 * canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
@@ -161,7 +162,17 @@ function main() {
             if (HUDobj.mode != undefined) {
                 endlessb.style.display = "none";
                 campaignb.style.display = "none";
+                document.getElementsByClassName("footer")[0].style.display = "none";
+                document.getElementsByClassName("header")[0].style.display = "none";
+                document.getElementsByClassName("header")[1].style.display = "none";
             } else {
+                // reposition footer and title text
+                document.getElementsByClassName("footer")[0].style = "position: absolute; margin-left: " + (canvas.clientWidth - document.getElementsByClassName("footer")[0].clientWidth) + "px; top: " + ((canvas.getBoundingClientRect().top + 999 * canvas.height / 1000) - 30 * canvas.width / 1100) + "px";
+                document.getElementsByClassName("footer")[0].style.left = canvas.getBoundingClientRect().left + "px";
+                document.getElementsByClassName("header")[0].style.left = canvas.getBoundingClientRect().left + 8 + "px";
+                document.getElementsByClassName("header")[1].style.left = canvas.getBoundingClientRect().left + 8 + "px";
+                document.getElementsByClassName("header")[1].style.top = canvas.getBoundingClientRect().top + 28 + "px";
+
                 campaignb.style.width = 222 * canvas.width / 550 + "px";
                 campaignb.style.height = 39 * canvas.width / 550 + "px";
                 campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 + 50) * canvas.width / 1100) + "px";
@@ -189,7 +200,7 @@ function main() {
                 }
             }
             // resize canvas accordingly
-            canvas.width = document.body.clientWidth * 0.65;
+            canvas.width = window.innerHeight * 16 / 9 - 64;
             canvas.height = 9 * canvas.width / 16;
         }, 100);
     } else {

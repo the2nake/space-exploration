@@ -12,11 +12,13 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
     r2 = obj2[key2].boxradius * obj2[key2].scale ** 2;
     if (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) <= r1 + r2) {
         // return true;
-        player.health -= 5;
+        player.health -= 20;
         // confirmed collision
         if (player.health <= 0) {
             losesound.play();
             musicEl.src = "audio/defeat.ogg";
+            musicEl.loop = false;
+            musicEl.play();
             console.log("We have a loser!");
             var temp = obj2[key2];
             var finalscore = obj2[key2].score;
@@ -27,17 +29,22 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
             obj2[key2].ctx.fillStyle = "white";
             obj2[key2].ctx.fillText("You have lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
 
+            document.onclick = function() {
+                location.reload(false); // load from cache
+            };
             var s = function () {
                 temp.ctx.fillStyle = "black";
                 temp.ctx.fillRect(0, 0, obj2[key2].canvas.width, obj2[key2].canvas.height);
                 temp.ctx.font = "48px Ken Vector Future";
                 temp.ctx.textAlign = "center";
                 temp.ctx.fillStyle = "red";
-                temp.ctx.fillText("You have lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 18);
-                temp.ctx.font = "24px Ken Vector Future";
+                temp.ctx.fillText("You have lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 24);
+                temp.ctx.font = "24px Ken Vector Future Thin";
                 temp.ctx.fillStyle = "white";
-                temp.ctx.fillText("Your final score was: " + finalscore, obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 18);
+                temp.ctx.fillText("Your final score was: " + finalscore, obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
+                temp.ctx.fillText("Click to restart", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 24);
                 window.cancelAnimationFrame(mainhdl);
+                window.clearInterval(UIhdl);
                 window.requestAnimationFrame(s);
             };
             s();
@@ -197,7 +204,7 @@ class Player extends Ship {
             var me = this;
             window.setTimeout(function () {
                 me.reload = true;
-            }, 250);
+            }, 500);
         }
     }
 }
@@ -363,7 +370,6 @@ class Bullet {
 
         if (this.color === "Blue" || this.color === "Green") {
             lasersound = resources["audio/sfx_laser2.ogg"];
-            lasersound.volume = 0.25;
             lasersound.play();
         }
     }
@@ -409,7 +415,6 @@ class Bullet {
                     delete this.bullets[this.mykey];
                     delete this.enemies[COVID19.mykey];
                     killsound = resources["audio/sfx_twoTone.ogg"];
-                    killsound.volume = 0.5;
                     killsound.play();
 
                     this.player.score += 100;
