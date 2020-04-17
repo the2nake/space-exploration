@@ -132,6 +132,7 @@ p {
     margin-top: 9px;
     text-align: center;
     padding: 0 6px;
-    font-family: "Ken Vector Future Thin";
+    font-family: "Ken Vector Future Thin", "Courier New", Courier, monospace;
+    white-space: nowrap;
     overflow:hidden;
 }
