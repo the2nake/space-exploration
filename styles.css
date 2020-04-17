@@ -11,9 +11,19 @@
     src: url('./fonts/kenvector_future_thin2.ttf') format("truetype");
 }
 
-.header,
+header,
 .footer {
     position: absolute;
+}
+
+header{
+    max-width: calc(100% - 36px);
+}
+header h1 {
+    margin-bottom: 0;
+}
+header p {
+    margin-top: 0;
 }
 
 canvas {
@@ -24,6 +34,7 @@ canvas {
 
 body {
     margin-top: 0;
+    margin-left: 0;
     background: rgb(10, 10, 10);
     overflow: hidden;
 }

@@ -22,8 +22,12 @@ function main() {
 
 
         canvas = /** @type {HTMLCanvasElement} */ document.createElement("canvas");
-        canvas.width = window.innerHeight * 16 / 9 - 32;
+        canvas.width = window.innerWidth - 32;
         canvas.height = 9 * canvas.width / 16;
+        if (canvas.height + 64 > window.innerHeight) {
+            canvas.width = window.innerHeight * 16 / 9 - 64;
+            canvas.height = 9 * canvas.width / 16;
+        }
         coordwidth = 1000;
         coordheight = 562.5; // dynamic canvas scaling      
         document.getElementById("canvasBackDiv").appendChild(canvas);
@@ -93,26 +97,27 @@ function main() {
             // recursively call the next frame
             mainhdl = requestAnimationFrame(campaign);
         };
+        let canvasRect = canvas.getBoundingClientRect();
         endlessb = resources["images/UI/endless.png"];
         endlessb.style.position = "absolute";
         endlessb.style.width = 222 * canvas.width / 550 + "px";
         endlessb.style.height = 39 * canvas.width / 550 + "px";
-        endlessb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - 39 * canvas.width / 1100) + 50 + "px";
-        endlessb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+        endlessb.style.top = ((canvasRect.top + canvas.height / 2) - 39 * canvas.width / 1100) + 50 + "px";
+        endlessb.style.left = ((canvasRect.left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
         document.body.appendChild(endlessb);
         campaignb = resources["images/UI/campaign.png"];
         campaignb.style.position = "absolute";
         campaignb.style.width = 222 * canvas.width / 550 + "px";
         campaignb.style.height = 39 * canvas.width / 550 + "px";
-        campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - 39 * canvas.width / 1100) - 50 + "px";
-        campaignb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+        campaignb.style.top = ((canvasRect.top + canvas.height / 2) - 39 * canvas.width / 1100) - 50 + "px";
+        campaignb.style.left = ((canvasRect.left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
         document.body.appendChild(campaignb);
         muteb = resources["images/UI/muted.png"];
         muteb.style.position = "absolute";
         muteb.style.width = 24 * canvas.width / 550 + "px";
         muteb.style.height = 24 * canvas.width / 550 + "px";
-        muteb.style.top = ((canvas.getBoundingClientRect().top + 999 * canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
-        muteb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
+        muteb.style.top = ((canvasRect.top + 999 * canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
+        muteb.style.left = ((canvasRect.left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
         document.body.appendChild(muteb);
 
         musicEl = resources["audio/title-screen.ogg"];
@@ -154,33 +159,33 @@ function main() {
             requestAnimationFrame(intialscreen);
         });
         UIhdl = window.setInterval(function UIresize() {
-
+            let header = document.getElementsByTagName("header")[0];
+            let footer = document.getElementsByClassName("footer")[0];
+            let canvasRect = canvas.getBoundingClientRect();
             muteb.style.width = 24 * canvas.width / 550 + "px";
             muteb.style.height = 24 * canvas.width / 550 + "px";
-            muteb.style.top = ((canvas.getBoundingClientRect().top + 999 * canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
-            muteb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
+            muteb.style.top = ((canvasRect.top + 999 * canvas.height / 1000) - 48 * canvas.width / 1100) + "px";
+            muteb.style.left = ((canvasRect.left + canvas.width / 1000) + 12 * canvas.width / 1100) + "px";
             if (HUDobj.mode != undefined) {
                 endlessb.style.display = "none";
                 campaignb.style.display = "none";
-                document.getElementsByClassName("footer")[0].style.display = "none";
-                document.getElementsByClassName("header")[0].style.display = "none";
-                document.getElementsByClassName("header")[1].style.display = "none";
+                footer.style.display = "none";
+                header0.style.display = "none";
+                header1.style.display = "none";
             } else {
                 // reposition footer and title text
-                document.getElementsByClassName("footer")[0].style = "position: absolute; margin-left: " + (canvas.clientWidth - document.getElementsByClassName("footer")[0].clientWidth) + "px; top: " + ((canvas.getBoundingClientRect().top + 999 * canvas.height / 1000) - 30 * canvas.width / 1100) + "px";
-                document.getElementsByClassName("footer")[0].style.left = canvas.getBoundingClientRect().left + "px";
-                document.getElementsByClassName("header")[0].style.left = canvas.getBoundingClientRect().left + 8 + "px";
-                document.getElementsByClassName("header")[1].style.left = canvas.getBoundingClientRect().left + 8 + "px";
-                document.getElementsByClassName("header")[1].style.top = canvas.getBoundingClientRect().top + 28 + "px";
+                footer.style = "position: absolute; margin-left: " + (canvas.clientWidth - document.getElementsByClassName("footer")[0].clientWidth) + "px; top: " + ((canvasRect.top + 999 * canvas.height / 1000) - 40) + "px";
+                footer.style.left = canvasRect.left + "px";
+                header.style.left = canvasRect.left + 8 + "px";
 
                 campaignb.style.width = 222 * canvas.width / 550 + "px";
                 campaignb.style.height = 39 * canvas.width / 550 + "px";
-                campaignb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 + 50) * canvas.width / 1100) + "px";
-                campaignb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+                campaignb.style.top = ((canvasRect.top + canvas.height / 2) - (39 + 50) * canvas.width / 1100) + "px";
+                campaignb.style.left = ((canvasRect.left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
                 endlessb.style.width = 222 * canvas.width / 550 + "px";
                 endlessb.style.height = 39 * canvas.width / 550 + "px";
-                endlessb.style.top = ((canvas.getBoundingClientRect().top + canvas.height / 2) - (39 - 50) * canvas.width / 1100) + "px";
-                endlessb.style.left = ((canvas.getBoundingClientRect().left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
+                endlessb.style.top = ((canvasRect.top + canvas.height / 2) - (39 - 50) * canvas.width / 1100) + "px";
+                endlessb.style.left = ((canvasRect.left + canvas.width / 2) - 222 * canvas.width / 1100) + "px";
             }
             // mute audio
             if (mute) {
@@ -200,8 +205,12 @@ function main() {
                 }
             }
             // resize canvas accordingly
-            canvas.width = window.innerHeight * 16 / 9 - 64;
+            canvas.width = window.innerWidth - 32;
             canvas.height = 9 * canvas.width / 16;
+            if (canvas.height + 64 > window.innerHeight) {
+                canvas.width = window.innerHeight * 16 / 9 - 64;
+                canvas.height = 9 * canvas.width / 16;
+            }
         }, 100);
     } else {
         allhandl = window.requestAnimationFrame(main);
