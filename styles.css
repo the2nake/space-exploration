@@ -3,12 +3,12 @@
 
 @font-face {
     font-family: 'Ken Vector Future';
-    src: url('./fonts/kenvector_future.ttf') format("truetype");
+    src: url('./fonts/kenvector_future2.ttf') format("truetype");
 }
 
 @font-face {
     font-family: 'Ken Vector Future Thin';
-    src: url('./fonts/kenvector_future_thin.ttf') format("truetype");
+    src: url('./fonts/kenvector_future_thin2.ttf') format("truetype");
 }
 
 .header,

@@ -27,7 +27,7 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
             obj2[key2].ctx.font = "28px Ken Vector Future";
             obj2[key2].ctx.textAlign = "center";
             obj2[key2].ctx.fillStyle = "white";
-            obj2[key2].ctx.fillText("You have lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
+            obj2[key2].ctx.fillText("You Have Lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
 
             document.onclick = function() {
                 location.reload(false); // load from cache
@@ -38,11 +38,11 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
                 temp.ctx.font = "48px Ken Vector Future";
                 temp.ctx.textAlign = "center";
                 temp.ctx.fillStyle = "red";
-                temp.ctx.fillText("You have lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 24);
+                temp.ctx.fillText("You Have Lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 24);
                 temp.ctx.font = "24px Ken Vector Future Thin";
                 temp.ctx.fillStyle = "white";
                 temp.ctx.fillText("Your final score was: " + finalscore, obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
-                temp.ctx.fillText("Click to restart", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 24);
+                temp.ctx.fillText("Click to Restart", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 24);
                 window.cancelAnimationFrame(mainhdl);
                 window.clearInterval(UIhdl);
                 window.requestAnimationFrame(s);
@@ -477,11 +477,11 @@ class HUD {
         this.c.lineWidth = 4;
         this.c.font = "24px Ken Vector Future";
         if (this.levelArr.length >= this.scoreArr.length) {
-            this.c.strokeText("Score: ", canvas.width - 19 * this.levelArr.length - 130, 27);
-            this.c.fillText("Score: ", canvas.width - 19 * this.levelArr.length - 130, 27);
+            this.c.strokeText("SCORE: ", canvas.width - 19 * this.levelArr.length - 130, 27);
+            this.c.fillText("SCORE: ", canvas.width - 19 * this.levelArr.length - 130, 27);
         } else {
-            this.c.strokeText("Score: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
-            this.c.fillText("Score: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
+            this.c.strokeText("SCORE: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
+            this.c.fillText("SCORE: ", canvas.width - 19 * this.scoreArr.length - 130, 27);
         }
     }
     displayHealth(health) {
@@ -505,11 +505,11 @@ class HUD {
         this.c.lineWidth = 4;
         this.c.font = "24px Ken Vector Future";
         if (this.levelArr.length >= this.scoreArr.length) {
-            this.c.strokeText("Level: ", canvas.width - 19 * this.levelArr.length - 130, 54);
-            this.c.fillText("Level: ", canvas.width - 19 * this.levelArr.length - 130, 54);
+            this.c.strokeText("LEVEL: ", canvas.width - 19 * this.levelArr.length - 130, 54);
+            this.c.fillText("LEVEL: ", canvas.width - 19 * this.levelArr.length - 130, 54);
         } else {
-            this.c.strokeText("Level: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
-            this.c.fillText("Level: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
+            this.c.strokeText("LEVEL: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
+            this.c.fillText("LEVEL: ", canvas.width - 19 * this.scoreArr.length - 130, 54);
         }
     }
 }
