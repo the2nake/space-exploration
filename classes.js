@@ -38,11 +38,11 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
                 temp.ctx.font = "48px Ken Vector Future";
                 temp.ctx.textAlign = "center";
                 temp.ctx.fillStyle = "red";
-                temp.ctx.fillText("You Have Lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 24);
-                temp.ctx.font = "24px Ken Vector Future Thin";
+                temp.ctx.fillText("You Have Lost", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 - 32);
+                temp.ctx.font = "32px Ken Vector Future Thin";
                 temp.ctx.fillStyle = "white";
                 temp.ctx.fillText("Your final score was: " + finalscore, obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2);
-                temp.ctx.fillText("Click to Restart", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 24);
+                temp.ctx.fillText("Click to Restart", obj2[key2].canvas.width / 2, obj2[key2].canvas.height / 2 + 32);
                 window.cancelAnimationFrame(mainhdl);
                 window.clearInterval(UIhdl);
                 window.requestAnimationFrame(s);
