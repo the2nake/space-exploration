@@ -170,8 +170,7 @@ function main() {
                 endlessb.style.display = "none";
                 campaignb.style.display = "none";
                 footer.style.display = "none";
-                header0.style.display = "none";
-                header1.style.display = "none";
+                header.style.display = "none";
             } else {
                 // reposition footer and title text
                 footer.style = "position: absolute; margin-left: " + (canvas.clientWidth - document.getElementsByClassName("footer")[0].clientWidth) + "px; top: " + ((canvasRect.top + 999 * canvas.height / 1000) - 40) + "px";
