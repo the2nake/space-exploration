@@ -202,7 +202,7 @@ class Player extends Ship {
     }
     update() {
         super.update();
-        this.health += 0.02;
+        this.health += 0.05;
         if (this.health > 100) {
             this.health = 100;
         }
@@ -257,7 +257,7 @@ class Enemy extends Ship {
                 this.image = resources["images/Enemies/enemyRed3.png"];
                 this.width = 103;
                 this.speed = 3;
-                this.firespeed = 250;
+                this.firespeed = 100;
                 break;
             case 4:
                 this.image = resources["images/Enemies/enemyRed4.png"];
@@ -273,10 +273,10 @@ class Enemy extends Ship {
                 this.firespeed = 750;
                 break;
             case 6:
-                this.image = resources["images/Enemies/enemyRed5.png"];
-                this.width = 97;
-                this.speed = 2;
-                this.firespeed = 750;
+                this.image = resources["images/Enemies/enemyRed3.png"];
+                this.width = 103;
+                this.speed = 3;
+                this.firespeed = 100;
                 break;
             case 7:
                 this.image = resources["images/Enemies/enemyRed5.png"];
@@ -450,19 +450,6 @@ class Bullet {
 
             this.x += this.dx;
             this.y += this.dy;
-
-            if (this.x >= 1000) {
-                this.x = 0;
-            }
-            if (this.x < 0) {
-                this.x = 1000;
-            }
-            if (this.y >= 562.5) {
-                this.y = 0;
-            }
-            if (this.y < 0) {
-                this.y = 562.5;
-            }
         }
         if (this.color === "Green" || this.color === "Blue") {
             for (let i = 0; i < Object.keys(this.enemies).length; i++) {
@@ -487,7 +474,7 @@ class Bullet {
             }); // surgical strikes
         }
 
-        if (this.ticks > 100) {
+        if ((this.ticks > 100 && this.color == "Red") || (this.ticks > 200 && this.color != "Red")) {
             delete this.bullets[this.mykey];
         }
     }
