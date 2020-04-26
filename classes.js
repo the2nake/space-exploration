@@ -222,19 +222,13 @@ class Player extends Ship {
             this.reload = false;
             this.deg = (this.deg + 10) % 360;
             this.shoot(this.bullets, this.enemies, this, "Blue");
-            
+
             this.deg = (this.deg - 20) % 360;
             this.shoot(this.bullets, this.enemies, this, "Blue");
 
             this.deg = (this.deg + 10) % 360;
             this.shoot(this.bullets, this.enemies, this, "Green");
-
-            this.deg = (this.deg + 25) % 360;
-            this.shoot(this.bullets, this.enemies, this, "Green");
-
-            this.deg = (this.deg - 50) % 360;
-            this.shoot(this.bullets, this.enemies, this, "Green");
-            this.deg = (this.deg + 25) % 360;
+            
             var me = this;
             window.setTimeout(function () {
                 me.reload = true;
