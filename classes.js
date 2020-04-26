@@ -83,7 +83,7 @@ class Ship {
         this.scale = canvas.width / (33 * this.width);
         this.reload = true;
         this.dual = false;
-        this.firespeed = 333;
+        this.firespeed = 250;
     }
     /**
      * Updates the object
@@ -197,7 +197,7 @@ class Player extends Ship {
         this.agility = 0.3;
         this.speed = 5;
         this.health = 100;
-        this.dual = true;
+        this.dual = false;
         this.level = 1;
     }
     update() {
@@ -220,7 +220,21 @@ class Player extends Ship {
         }
         if (map[" "] && this.reload === true) {
             this.reload = false;
+            this.deg = (this.deg + 10) % 360;
             this.shoot(this.bullets, this.enemies, this, "Blue");
+            
+            this.deg = (this.deg - 20) % 360;
+            this.shoot(this.bullets, this.enemies, this, "Blue");
+
+            this.deg = (this.deg + 10) % 360;
+            this.shoot(this.bullets, this.enemies, this, "Green");
+
+            this.deg = (this.deg + 25) % 360;
+            this.shoot(this.bullets, this.enemies, this, "Green");
+
+            this.deg = (this.deg - 50) % 360;
+            this.shoot(this.bullets, this.enemies, this, "Green");
+            this.deg = (this.deg + 25) % 360;
             var me = this;
             window.setTimeout(function () {
                 me.reload = true;

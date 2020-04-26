@@ -58,7 +58,7 @@ function main() {
             }
             player.update();
 
-            if (Math.floor(Math.random() * 100) == 1) {
+            if (Math.floor(Math.random() * 300) == 1) {
                 var x = Math.random();
                 enemies[x] = (new Enemy(Math.random() * coordwidth, Math.random() * coordheight, canvas, bullets, enemies, player, x));
             }
