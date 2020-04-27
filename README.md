@@ -2,4 +2,5 @@
 A simple space exploration game currently in development.
 
 ## Credits
-Thank you kenney at [kenney](https://kenny.nl)
+Thanks to kenney at [kenney.nl](https://kenny.nl).
+Thanks to Medicine Storm at [opengameart.org](https://opengameart.org/users/medicinestorm).
