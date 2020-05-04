@@ -228,7 +228,7 @@ class Player extends Ship {
 
             this.deg = (this.deg + 10) % 360;
             this.shoot(this.bullets, this.enemies, this, "Green");
-            
+
             var me = this;
             window.setTimeout(function () {
                 me.reload = true;
@@ -247,6 +247,39 @@ class Enemy extends Ship {
     constructor(sx, sy, canvas, bullets, enemies, player, mykey) {
         super(sx, sy, canvas);
         switch (Math.floor(Math.random() * 10) + 1) {
+            case 1:
+                this.type = 1;
+                break;
+            case 2:
+                this.type = 1;
+                break;
+            case 3:
+                this.type = 1;
+                break;
+            case 4:
+                this.type = 2;
+                break;
+            case 5:
+                this.type = 2;
+                break;
+            case 6:
+                this.type = 3;
+                break;
+            case 7:
+                this.type = 3;
+                break;
+            case 8:
+                this.type = 4;
+                break;
+            case 9:
+                this.type = 5;
+                break;
+            case 10:
+                this.type = 5;
+                break;
+        }
+
+        switch (this.type) {
             case 1:
                 this.image = resources["images/Enemies/enemyRed1.png"];
                 this.width = 93;
@@ -280,33 +313,7 @@ class Enemy extends Ship {
                 this.speed = 2;
                 this.firespeed = 750;
                 break;
-            case 6:
-                this.image = resources["images/Enemies/enemyRed3.png"];
-                this.width = 103;
-                this.speed = 3;
-                this.firespeed = 100;
-                break;
-            case 7:
-                this.image = resources["images/Enemies/enemyRed5.png"];
-                this.width = 97;
-                this.speed = 2;
-                this.firespeed = 750;
-                break;
-            case 8:
-                this.image = resources["images/Enemies/enemyRed1.png"];
-                this.width = 93;
-                this.speed = 4;
-                this.dual = true;
-                this.firespeed = 750;
-                break;
-            case 9:
-                this.image = resources["images/Enemies/enemyRed2.png"];
-                this.width = 104;
-                this.speed = 3;
-                this.dual = true;
-                this.firespeed = 500;
-                break;
-            case 10:
+            default:
                 this.image = resources["images/Enemies/enemyRed1.png"];
                 this.width = 93;
                 this.speed = 4;
@@ -314,6 +321,7 @@ class Enemy extends Ship {
                 this.firespeed = 750;
                 break;
         }
+
         this.height = 84;
         this.circleRadius = Math.random() * 50;
         this.circleMovement = Math.random() * 2;
