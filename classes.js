@@ -139,13 +139,13 @@ class Ship {
         if (this.dual) {
             var x = Math.random();
             if (color == "Red") {
-                bullets[x] = new Bullet(color, this.x + 7*Math.cos(Math.PI*((this.deg - 180) % 360)/180), this.y + 7*Math.sin(Math.PI*(this.deg %360)/180), (this.deg - 180) % 360, this.canvas, bullets, enemies, player, x);
+                bullets[x] = new Bullet(color, this.x + 7 * Math.cos(Math.PI * ((this.deg - 180) % 360) / 180), this.y + 7 * Math.sin(Math.PI * ((this.deg - 180) % 360) / 180), (this.deg - 180), this.canvas, bullets, enemies, player, x);
                 x = Math.random();
-                bullets[x] = new Bullet(color, this.x - 7*Math.cos(Math.PI*((this.deg - 180) % 360)/180), this.y - 7*Math.sin(Math.PI*(this.deg %360)/180), (this.deg - 180) % 360, this.canvas, bullets, enemies, player, x);
+                bullets[x] = new Bullet(color, this.x - 7 * Math.cos(Math.PI * ((this.deg - 180) % 360) / 180), this.y - 7 * Math.sin(Math.PI * ((this.deg - 180) % 360) / 180), (this.deg - 180), this.canvas, bullets, enemies, player, x);
             } else {
-                bullets[x] = new Bullet(color, this.x + 7*Math.cos(Math.PI*(this.deg % 360)/180), this.y + 7*Math.sin(Math.PI*(this.deg %360)/180), this.deg, this.canvas, bullets, enemies, player, x);
+                bullets[x] = new Bullet(color, this.x + 7 * Math.cos(Math.PI * (this.deg % 360) / 180), this.y + 7 * Math.sin(Math.PI * (this.deg % 360) / 180), this.deg, this.canvas, bullets, enemies, player, x);
                 x = Math.random();
-                bullets[x] = new Bullet(color, this.x - 7*Math.cos(Math.PI*(this.deg % 360)/180), this.y - 7*Math.sin(Math.PI*(this.deg %360)/180), this.deg, this.canvas, bullets, enemies, player, x);
+                bullets[x] = new Bullet(color, this.x - 7 * Math.cos(Math.PI * (this.deg % 360) / 180), this.y - 7 * Math.sin(Math.PI * (this.deg % 360) / 180), this.deg, this.canvas, bullets, enemies, player, x);
             }
         } else {
             x = Math.random();
