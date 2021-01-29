@@ -1,4 +1,4 @@
-// keys
+/* // keys
 var map = {}; // You could also use an array
 var repeat = false;
 
@@ -12,3 +12,8 @@ window.addEventListener('keydown', function (e) {
 window.addEventListener('keyup', function (e) {
     map[e.key] = (e.type == "keydown");
 });
+*/
+
+// minified version
+
+var map={},repeat=!1;window.addEventListener("keydown",function(e){e.key,(map=map||[])[e.key]="keydown"==e.type}),window.addEventListener("keyup",function(e){map[e.key]="keydown"==e.type});

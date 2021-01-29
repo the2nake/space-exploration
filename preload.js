@@ -21,13 +21,11 @@ function handle(temp, i, type) {
         temp.onloadeddata = function () {
             resources[resource_name_list[i]] = temp;
             resources_loaded += 1;
-            console.log(temp);
         };
     } else if (type == "img") {
         temp.onload = function () {
             resources[resource_name_list[i]] = temp;
             resources_loaded += 1;
-            console.log(temp);
         };
     }
 }

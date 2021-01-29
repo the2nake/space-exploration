@@ -16,7 +16,7 @@ function main() {
     if (resources_loaded == total_resources_needed && ticks >= 100) {
         createSounds();
         let time = new Date();
-        console.info("Game started at " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " on " + time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear());
+        console.info("Game started at " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " on " + time.getDate() + "-" + (time.getMonth() + 1) + "-" + time.getFullYear());
         document.getElementById("screen-overflow").style.display = "none";
         document.getElementById("loadbar-gradient").style.display = "none";
         document.getElementById("loadbar-outline").style.display = "none";
@@ -44,7 +44,7 @@ function main() {
         endless = function () {
             // endless only
 
-            if (Math.floor(Math.random() * 300) == 1) {
+            if (Math.floor(Math.random() * 200) == 1) {
                 var x = Math.random();
                 enemies[x] = new Enemy(Math.random() * coordwidth, Math.random() * coordheight, canvas, bullets, enemies, player, x, false, 0);
             }
@@ -77,11 +77,12 @@ function main() {
             // recursively call the next frame
             mainhdl = requestAnimationFrame(endless);
         };
-        campaign = function (level = 0) {
+        campaign = function (level = 0, score = 0) {
             // campaign-only
             if (0 < level) { // spawn
                 player = new Player(levels[level].playerx, levels[level].playery, canvas, bullets, enemies);
                 player.level = level;
+                player.score = score;
                 for (let i = 0; i < Object.keys(levels[level].enemies).length / 3; i++) {
                     let temp = levels[level].enemies;
                     let x = Math.random();
@@ -109,9 +110,21 @@ function main() {
             // recursively call the next frame
             if (Object.keys(enemies).length <= 0) {
                 if (levels[player.level + 1]) {
-                    mainhdl = requestAnimationFrame(function () {
-                        campaign(player.level + 1);
-                    });
+                    window.setTimeout(function () { campaign(player.level + 1, player.score) }, 2000);
+                    var temp = player;
+                    var scancel;
+                    var s = function () {
+                        temp.ctx.fillStyle = "black";
+                        temp.ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        temp.ctx.font = "48px Ken Vector Future";
+                        temp.ctx.textAlign = "center";
+                        temp.ctx.fillStyle = "white";
+                        temp.ctx.fillText(`Level ${player.level + 1}`, canvas.width / 2, canvas.height / 2 - 24);
+                        window.cancelAnimationFrame(mainhdl);
+                        scancel = window.requestAnimationFrame(s);
+                    };
+                    s();
+                    window.setTimeout(function () { window.cancelAnimationFrame(scancel) }, 1900);
                 } else {
                     musicEl.src = "audio/victory-tune.ogg";
                     musicEl.loop = false;
@@ -137,13 +150,12 @@ function main() {
                         temp.ctx.fillText("Thank you for playing!", canvas.width / 2, canvas.height / 2);
                         temp.ctx.fillText("Fork me on Github!", canvas.width / 2, canvas.height / 2 + 32);
                         window.cancelAnimationFrame(mainhdl);
-                        window.clearInterval(UIhdl);
                         window.requestAnimationFrame(s);
                     };
                     s();
                 }
             } else {
-                mainhdl = requestAnimationFrame(function(){ campaign(0); });
+                mainhdl = requestAnimationFrame(function () { campaign(0); });
             }
         };
         let canvasRect = canvas.getBoundingClientRect();
@@ -186,7 +198,20 @@ function main() {
             campaignb.style.display = "none";
             HUDobj.mode = true; // campaign mode
             window.cancelAnimationFrame(intialhdl);
-            campaign(1);
+            window.setTimeout(function () { campaign(1, 0); }, 2000);
+            var scancel;
+            var s = function () {
+                c.fillStyle = "black";
+                c.fillRect(0, 0, canvas.width, canvas.height);
+                c.font = "48px Ken Vector Future";
+                c.textAlign = "center";
+                c.fillStyle = "white";
+                c.fillText(`Level 1`, canvas.width / 2, canvas.height / 2 - 24);
+                window.cancelAnimationFrame(mainhdl);
+                scancel = window.requestAnimationFrame(s);
+            };
+            s();
+            window.setTimeout(function () { window.cancelAnimationFrame(scancel) }, 1900);
         });
         muteb.addEventListener("click", function () {
             if (mute) {
@@ -263,5 +288,4 @@ function main() {
         allhandl = window.requestAnimationFrame(main);
     }
 }
-
 main();

@@ -37,7 +37,7 @@ function handleCircleCollision(key1, obj1, key2, obj2) {
             temp.ctx.fillRect(0, 0, temp.canvas.width, temp.canvas.height);
 
             document.onclick = function () {
-                location.reload(false); // load from cache
+                location.reload(); // load from cache
             };
             var s = function () {
                 temp.ctx.fillStyle = "black";
@@ -91,6 +91,7 @@ class Ship {
         this.reload = true;
         this.dual = false;
         this.firespeed = 250;
+        this.health = 100;
     }
     /**
      * Updates the object
@@ -134,32 +135,27 @@ class Ship {
      * @param {String} color The color of the bullet. Can be "Green", "Red", or "Blue"
      */
     shoot(bullets, enemies, player, color) {
+        // any key is fine, but the keys must stay constant, so use object with random keys. BAD idea, but too lazy to fix, sorry
         if (this.dual) {
-            let x = Math.random(); // any key is fine, but the keys must stay constant, so use object with random keys. 
-            // You need 5 * 10 ^ 15 entities for that to overlap
-            if (color === "Red") {
-                bullets[x] = new Bullet(color, this.x + 10 * Math.cos(Math.PI / 180 * ((this.deg + 180) % 180)), this.y + 10 * Math.sin((this.deg + 180) % 180), (this.deg + 180) % 360, this.canvas, bullets, enemies, player, x);
+            var x = Math.random();
+            if (color == "Red") {
+                bullets[x] = new Bullet(color, this.x + 7*Math.cos(Math.PI*((this.deg - 180) % 360)/180), this.y + 7*Math.sin(Math.PI*(this.deg %360)/180), (this.deg - 180) % 360, this.canvas, bullets, enemies, player, x);
+                x = Math.random();
+                bullets[x] = new Bullet(color, this.x - 7*Math.cos(Math.PI*((this.deg - 180) % 360)/180), this.y - 7*Math.sin(Math.PI*(this.deg %360)/180), (this.deg - 180) % 360, this.canvas, bullets, enemies, player, x);
             } else {
-                bullets[x] = new Bullet(color, this.x + 10 * Math.cos(Math.PI / 180 * this.deg), this.y + 10 * Math.sin(Math.PI / 180 * this.deg), this.deg, this.canvas, bullets, enemies, player, x);
-            }
-            x = Math.random(); // any key is fine, but the keys must stay constant, so use object with random keys. 
-            // You need 5 * 10 ^ 15 entities for that to overlap
-            if (color === "Red") {
-                bullets[x] = new Bullet(color, this.x - 10 * Math.cos(Math.PI / 180 * ((this.deg + 180) % 180)), this.y - 10 * Math.sin((this.deg + 180) % 180), (this.deg + 180) % 360, this.canvas, bullets, enemies, player, x);
-            } else {
-                bullets[x] = new Bullet(color, this.x - 10 * Math.cos(Math.PI / 180 * this.deg), this.y - 10 * Math.sin(Math.PI / 180 * this.deg), this.deg, this.canvas, bullets, enemies, player, x);
+                bullets[x] = new Bullet(color, this.x + 7*Math.cos(Math.PI*(this.deg % 360)/180), this.y + 7*Math.sin(Math.PI*(this.deg %360)/180), this.deg, this.canvas, bullets, enemies, player, x);
+                x = Math.random();
+                bullets[x] = new Bullet(color, this.x - 7*Math.cos(Math.PI*(this.deg % 360)/180), this.y - 7*Math.sin(Math.PI*(this.deg %360)/180), this.deg, this.canvas, bullets, enemies, player, x);
             }
         } else {
-            let x = Math.random(); // any key is fine, but the keys must stay constant, so use object with random keys. 
-            // You need 5 * 10 ^ 15 entities for that to overlap
-            if (color === "Red") {
-                bullets[x] = new Bullet(color, this.x, this.y, (this.deg + 180) % 360, this.canvas, bullets, enemies, player, x);
+            x = Math.random();
+            if (color == "Red") {
+                bullets[x] = new Bullet(color, this.x, this.y, (this.deg - 180) % 360, this.canvas, bullets, enemies, player, x);
             } else {
                 bullets[x] = new Bullet(color, this.x, this.y, this.deg, this.canvas, bullets, enemies, player, x);
             }
         }
     }
-
     /**
      * Acceleration
      */
@@ -203,8 +199,8 @@ class Player extends Ship {
         this.score = 0;
         this.agility = 0.3;
         this.speed = 5;
-        this.health = 100;
-        this.dual = false;
+        this.health = 200;
+        this.dual = true;
         this.healspeed = 0.2;
     }
     update() {
@@ -232,14 +228,8 @@ class Player extends Ship {
         }
         if (map[" "] && this.reload === true) {
             this.reload = false;
-            this.deg = (this.deg + 10) % 360;
+            this.deg = this.deg % 360;
             this.shoot(this.bullets, this.enemies, this, "Blue");
-
-            this.deg = (this.deg - 20) % 360;
-            this.shoot(this.bullets, this.enemies, this, "Blue");
-
-            this.deg = (this.deg + 10) % 360;
-            this.shoot(this.bullets, this.enemies, this, "Green");
 
             var me = this;
             window.setTimeout(function () {
@@ -272,7 +262,7 @@ class Enemy extends Ship {
                     this.type = 1;
                     break;
                 case 4:
-                    this.type = 2;
+                    this.type = 1;
                     break;
                 case 5:
                     this.type = 2;
@@ -299,8 +289,8 @@ class Enemy extends Ship {
                 this.image = resources["images/Enemies/enemyRed1.png"];
                 this.width = 93;
                 this.speed = 4;
-                this.dual = true;
                 this.firespeed = 750;
+                this.health = 100;
                 break;
             case 2:
                 this.image = resources["images/Enemies/enemyRed2.png"];
@@ -308,12 +298,14 @@ class Enemy extends Ship {
                 this.speed = 3;
                 this.dual = true;
                 this.firespeed = 500;
+                this.health = 200;
                 break;
             case 3:
                 this.image = resources["images/Enemies/enemyRed3.png"];
                 this.width = 103;
                 this.speed = 3;
                 this.firespeed = 100;
+                this.health = 100;
                 break;
             case 4:
                 this.image = resources["images/Enemies/enemyRed4.png"];
@@ -321,12 +313,14 @@ class Enemy extends Ship {
                 this.speed = 1;
                 this.dual = true;
                 this.firespeed = 250;
+                this.health = 500;
                 break;
             case 5:
                 this.image = resources["images/Enemies/enemyRed5.png"];
                 this.width = 97;
                 this.speed = 2;
                 this.firespeed = 750;
+                this.health = 600;
                 break;
             default:
                 this.image = resources["images/Enemies/enemyRed1.png"];
@@ -334,6 +328,7 @@ class Enemy extends Ship {
                 this.speed = 4;
                 this.dual = true;
                 this.firespeed = 750;
+                this.health = 100;
                 break;
         }
 
@@ -347,12 +342,13 @@ class Enemy extends Ship {
         this.mykey = mykey;
         this.player = player;
         this.active = false;
+        this.maxHealth = this.health;
 
         var me = this;
 
         window.setTimeout(function () {
             me.active = true;
-        }, this.type * 1000);
+        }, this.type * 1500);
     }
     /**
      * Updates the enemy
@@ -418,7 +414,7 @@ class Enemy extends Ship {
             }
         }
 
-        if ((this.diffx ** 2 + this.diffy ** 2) ** (1 / 2) <= 400) {
+        if ((this.diffx ** 2 + this.diffy ** 2) ** (1 / 2) <= 100) {
             this.active = true;
         }
 
@@ -507,13 +503,15 @@ class Bullet {
                     var img = document.createElement("img");
                     img.src = "images/Lasers/laser" + this.color + "08.png";
                     this.ctx.drawImage(img, canvas.width * this.x / 1000 - 24 * this.enemies[COVID19.mykey].scale, canvas.height * this.enemies[COVID19.mykey].y / 562.5 - 24 * this.enemies[COVID19.mykey].scale, 48 * this.enemies[COVID19.mykey].scale, 48 * this.enemies[COVID19.mykey].scale);
-
+                    COVID19.health -= 100;
                     delete this.bullets[this.mykey];
-                    delete this.enemies[COVID19.mykey];
-                    killsound = resources["audio/sfx_twoTone.ogg"];
-                    killsound.play();
+                    if (COVID19.health <= 0) {
+                        delete this.enemies[COVID19.mykey];
+                        killsound = resources["audio/sfx_twoTone.ogg"];
+                        killsound.play();
 
-                    this.player.score += 100;
+                        this.player.score += COVID19.maxHealth;
+                    }
                 }
             }
         } else if ((this.player.x - this.x) < 30 && (this.player.y - this.y) < 30) { // broad sweeps
